@@ -1,29 +1,26 @@
-
-import express, { Application } from "express";
-import { connectDB } from "./config/db";
-import studentRoites from  "./routes/student.route"
-import classroomRoites from "./routes/class.route";
-import  TeacherRoites  from "./routes/teacher.route";
-import * as dotenv from 'dotenv';
-import { userInfo } from "os";
-const app:Application = express();
-dotenv.config();
+import  express ,{Application,Request,Response} from "express";
+import { PrismaClient } from '@prisma/client'
+import routes from './routes/routes'
 const port = process.env.PORT || 3006;
+const app:Application = express();
+const prisma = new PrismaClient()
+import * as dotenv from 'dotenv'
+import cors from 'cors';
 
-connectDB();
+app.use(cors());
 
+dotenv.config();
 
 app.use(express.json());
 
-app.use("/student", studentRoites);
 
-app.use("/Classroom", classroomRoites);
-
-app.use("/Teacher", TeacherRoites);
+app.use("/", routes)
 
 
 
 
-const PORT = 3005;
+
+
+const PORT = 8000;
 app.listen(PORT, () => {console.log("server listening on port " + PORT);
 });
